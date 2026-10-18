@@ -1,0 +1,8 @@
+<footer class="footer">
+    <div class="footer-inner">
+        <a class="brand brand-light" href="${pageContext.request.contextPath}/">shop<span>sphere</span><i>.</i></a>
+        <p>Better finds. Better everyday.</p>
+        <div class="footer-links"><a href="${pageContext.request.contextPath}/products">Shop</a><a href="${pageContext.request.contextPath}/orders">Your orders</a><a href="?lang=hi">हिंदी</a><a href="?lang=en">English</a></div>
+        <small>© 2026 ShopSphere · Student project · Mock checkout only</small>
+    </div>
+</footer>

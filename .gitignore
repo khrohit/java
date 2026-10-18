@@ -1,2 +1,5 @@
 jdk-26.0.2/ 
 *.class 
+/apache-tomcat-11.0.27/
+/apache-tomcat-11.0.27.zip
+/.m2-repository/

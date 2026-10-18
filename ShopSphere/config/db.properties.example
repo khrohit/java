@@ -1,0 +1,5 @@
+# Copy this file to apache-tomcat-11.0.27/conf/shopsphere-db.properties
+# and set your MySQL username/password. Keep the real file out of Git.
+db.url=jdbc:mysql://127.0.0.1:3306/shopsphere?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true
+db.username=root
+db.password=

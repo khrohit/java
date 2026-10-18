@@ -1,28 +1,33 @@
 package com.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/hello")
 public class HelloServlet extends HttpServlet {
 
     @Override
-    protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response)
+    protected void doPost(HttpServletRequest request,
+                           HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String course = request.getParameter("course");
+        String age = request.getParameter("age");
+        String phone = request.getParameter("phone");
 
-        PrintWriter out = response.getWriter();
+        request.setAttribute("name", name);
+        request.setAttribute("email", email);
+        request.setAttribute("course", course);
+        request.setAttribute("age", age);
+        request.setAttribute("phone", phone);
 
-        out.println("<h1>Hello Students!</h1>");
-        out.println("<h2>Welcome to Servlet Programming</h2>");
+        request.getRequestDispatcher("result.jsp")
+               .forward(request, response);
     }
 }

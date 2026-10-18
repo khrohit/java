@@ -1,18 +1,15 @@
-## Getting Started
+# Servlet project on Apache Tomcat 11
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This project uses Jakarta Servlet 6.1 and JSP 4.0, so it is configured for Tomcat 11. Java 17 or later is required; this workspace has Java 21. The student form is in `student.jsp`, `/hello` handles the POST, and `result.jsp` displays submitted values with JSP Expression Language.
 
-## Folder Structure
+## Run on Windows
 
-The workspace contains two folders by default, where:
+From the project root, open PowerShell and run the command file. It handles PowerShell's default script policy for this run:
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+```powershell
+.\servlet\run-tomcat11.cmd
+```
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+The script packages the WAR with Maven, copies it to Tomcat's `webapps` folder, and starts Tomcat if port 8080 is free. Open <http://localhost:8080/servlet/>. Stop the server with `..\apache-tomcat-11.0.27\bin\shutdown.bat`.
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
-
-## Dependency Management
-
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+Tomcat 11.0.27 is installed in `../apache-tomcat-11.0.27` relative to this project. If you move or replace that folder, update the script's `$TomcatHome` value.
