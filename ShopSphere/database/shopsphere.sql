@@ -139,7 +139,10 @@ CREATE TABLE IF NOT EXISTS coupon_usage (
 INSERT IGNORE INTO categories(name, description) VALUES
 ('Audio', 'Headphones, speakers and audio accessories'),
 ('Wearables', 'Smart watches and wearable technology'),
-('Accessories', 'Everyday tech essentials');
+('Accessories', 'Everyday tech essentials'),
+('Computing', 'Useful gear for work, study and play'),
+('Home', 'Thoughtful upgrades for everyday spaces'),
+('Fitness', 'Gear to support active days');
 
 INSERT INTO products(category_id, name, brand, description, price, discount, stock, image_url)
 SELECT c.category_id, seed.name, seed.brand, seed.description, seed.price, seed.discount, seed.stock, seed.image_url
@@ -150,6 +153,17 @@ FROM (
   UNION ALL SELECT 'Accessories', 'Everyday Backpack', 'Fieldwork', 'A clean, durable carry with a padded pocket for your laptop.', 4599.00, 0.00, 21, 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=900&q=85'
   UNION ALL SELECT 'Accessories', 'Minimal Desk Lamp', 'Form & Function', 'Warm adjustable light with an uncluttered profile for focused work.', 2799.00, 8.00, 30, 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85'
   UNION ALL SELECT 'Audio', 'Everyday Earbuds', 'Aural', 'True wireless earbuds with a pocket-size charging case.', 3999.00, 5.00, 42, 'https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Computing', 'Mechanical Keyboard', 'Keycraft', 'A compact mechanical keyboard with tactile switches and a clean aluminum finish.', 5499.00, 12.00, 19, 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Computing', 'Precision Wireless Mouse', 'Northstar', 'A comfortable wireless mouse with adjustable tracking for focused work.', 2499.00, 8.00, 31, 'https://images.unsplash.com/photo-1527814050087-3793815479db?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Computing', 'USB-C Multiport Hub', 'Fieldwork', 'A travel-friendly hub with HDMI, USB and card reader connections.', 3199.00, 10.00, 26, 'https://images.unsplash.com/photo-1625842268584-8f3296236761?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Computing', 'Laptop Stand', 'Form & Function', 'An adjustable aluminum stand that lifts your screen to a comfortable height.', 2899.00, 0.00, 22, 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Home', 'Ceramic Pour-Over Set', 'Morrow', 'A simple ceramic dripper and mug set for a slower morning coffee.', 1899.00, 5.00, 16, 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Home', 'Insulated Travel Bottle', 'Fieldwork', 'A stainless steel bottle designed to keep drinks at temperature on the go.', 1499.00, 0.00, 40, 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Home', 'Soft Glow Table Light', 'Form & Function', 'A warm, compact lamp that brings gentle light to a bedside or reading nook.', 3499.00, 15.00, 13, 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Fitness', 'Everyday Yoga Mat', 'Movewell', 'A cushioned, non-slip mat for stretching, yoga and home workouts.', 2199.00, 10.00, 28, 'https://images.unsplash.com/photo-1592432678016-e910b452f9a2?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Fitness', 'Active Loop Band Set', 'Movewell', 'Three resistance levels for warmups, mobility and strength sessions.', 999.00, 0.00, 45, 'https://images.unsplash.com/photo-1598289431512-b97b0917affc?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Accessories', 'Everyday Sunglasses', 'Morrow', 'Lightweight everyday frames with a classic shape and UV protection.', 1799.00, 8.00, 20, 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=900&q=85'
+  UNION ALL SELECT 'Accessories', 'Canvas Weekender Tote', 'Fieldwork', 'A roomy, durable tote for daily errands and short weekend trips.', 2399.00, 5.00, 18, 'https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&w=900&q=85'
 ) seed
 JOIN categories c ON c.name = seed.category_name
 WHERE NOT EXISTS (SELECT 1 FROM products WHERE products.name = seed.name);
