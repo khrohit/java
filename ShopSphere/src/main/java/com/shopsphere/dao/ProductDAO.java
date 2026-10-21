@@ -34,6 +34,53 @@ public class ProductDAO {
         }
     }
 
+    public List<Product> findPage(String search, Long categoryId, String sort, int limit, int offset) throws SQLException {
+        StringBuilder sql = new StringBuilder(SELECT).append("WHERE p.status=1 ");
+        if (search != null && !search.isBlank()) sql.append("AND (p.name LIKE ? OR p.brand LIKE ? OR p.description LIKE ?) ");
+        if (categoryId != null && categoryId > 0) sql.append("AND p.category_id=? ");
+        sql.append(switch (sort == null ? "" : sort) {
+            case "price-low" -> "ORDER BY p.price ASC";
+            case "price-high" -> "ORDER BY p.price DESC";
+            case "name" -> "ORDER BY p.name ASC";
+            default -> "ORDER BY p.created_at DESC";
+        }).append(" LIMIT ? OFFSET ?");
+
+        try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql.toString())) {
+            int i = bindFilters(ps, search, categoryId);
+            ps.setInt(i++, Math.max(1, Math.min(limit, 48)));
+            ps.setInt(i, Math.max(0, offset));
+            try (ResultSet rs = ps.executeQuery()) {
+                List<Product> products = new ArrayList<>();
+                while (rs.next()) products.add(map(rs));
+                return products;
+            }
+        }
+    }
+
+    public int countMatching(String search, Long categoryId) throws SQLException {
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM products p WHERE p.status=1 ");
+        if (search != null && !search.isBlank()) sql.append("AND (p.name LIKE ? OR p.brand LIKE ? OR p.description LIKE ?) ");
+        if (categoryId != null && categoryId > 0) sql.append("AND p.category_id=? ");
+        try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql.toString())) {
+            bindFilters(ps, search, categoryId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
+        }
+    }
+
+    private int bindFilters(PreparedStatement ps, String search, Long categoryId) throws SQLException {
+        int i = 1;
+        if (search != null && !search.isBlank()) {
+            String term = "%" + search.trim() + "%";
+            ps.setString(i++, term);
+            ps.setString(i++, term);
+            ps.setString(i++, term);
+        }
+        if (categoryId != null && categoryId > 0) ps.setLong(i++, categoryId);
+        return i;
+    }
+
     public List<Product> findFeatured() throws SQLException {
         try (Connection c = Database.getConnection();
              PreparedStatement ps = c.prepareStatement(SELECT + "WHERE p.status=1 ORDER BY p.discount DESC, p.created_at DESC LIMIT 8");

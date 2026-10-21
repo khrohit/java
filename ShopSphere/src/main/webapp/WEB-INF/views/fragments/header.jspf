@@ -6,7 +6,7 @@
 <header class="topbar">
     <div class="nav-wrap">
         <a class="brand" href="${pageContext.request.contextPath}/">shop<span>sphere</span><i>.</i></a>
-        <nav class="main-nav">
+        <nav class="main-nav" aria-label="Main navigation">
             <a href="${pageContext.request.contextPath}/products"><fmt:message key="nav.products" bundle="${msg}" /></a>
             <c:if test="${not empty sessionScope.shopUser}">
                 <a href="${pageContext.request.contextPath}/orders"><fmt:message key="nav.orders" bundle="${msg}" /></a>
@@ -17,8 +17,8 @@
                 <a href="${pageContext.request.contextPath}/admin"><fmt:message key="nav.admin" bundle="${msg}" /></a>
             </c:if>
         </nav>
-        <form class="nav-search" action="${pageContext.request.contextPath}/products" method="get">
-            <span aria-hidden="true">⌕</span><input name="q" placeholder="Search the store" value="${fn:escapeXml(param.q)}" aria-label="Search products">
+        <form class="nav-search" action="${pageContext.request.contextPath}/products" method="get" role="search">
+            <span class="search-icon" aria-hidden="true"></span><input type="search" name="q" placeholder="Search the store" value="${fn:escapeXml(param.q)}" aria-label="Search products">
         </form>
         <div class="nav-actions">
             <c:choose>

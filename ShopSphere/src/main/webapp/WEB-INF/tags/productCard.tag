@@ -6,7 +6,7 @@
 <article class="product-card">
     <a class="product-image" href="${pageContext.request.contextPath}/product?id=${product.productId}">
         <c:if test="${product.discount gt 0}"><span class="discount-pill"><fmt:formatNumber value="${product.discount}" maxFractionDigits="0"/>% off</span></c:if>
-        <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}" loading="lazy">
+        <img src="${fn:escapeXml(product.imageUrl)}" alt="${fn:escapeXml(product.name)}" loading="lazy" decoding="async">
         <span class="image-arrow">↗</span>
     </a>
     <div class="product-meta"><span><c:out value="${product.categoryName}"/></span><span><c:out value="${product.brand}"/></span></div>
