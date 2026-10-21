@@ -26,10 +26,16 @@
                 <option value="${category[0]}" ${param.category eq category[0] ? 'selected' : ''}><c:out value="${category[1]}"/></option>
             </c:forEach>
         </select>
+        <select name="availability" aria-label="Filter by availability">
+            <option value="">All products</option>
+            <option value="in-stock" ${param.availability eq 'in-stock' ? 'selected' : ''}>In stock</option>
+            <option value="on-sale" ${param.availability eq 'on-sale' ? 'selected' : ''}>On sale</option>
+        </select>
         <select name="sort" aria-label="Sort products">
             <option value="">Recently added</option>
             <option value="price-low" ${param.sort eq 'price-low' ? 'selected' : ''}>Price: low to high</option>
             <option value="price-high" ${param.sort eq 'price-high' ? 'selected' : ''}>Price: high to low</option>
+            <option value="discount-high" ${param.sort eq 'discount-high' ? 'selected' : ''}>Biggest discount</option>
             <option value="name" ${param.sort eq 'name' ? 'selected' : ''}>Name</option>
         </select>
         <button class="button button-dark" type="submit">Apply filters</button>
@@ -54,7 +60,7 @@
             <c:if test="${currentPage gt 1}">
                 <c:url var="previousPageUrl" value="/products">
                     <c:param name="page" value="${currentPage - 1}"/><c:param name="q" value="${param.q}"/>
-                    <c:param name="category" value="${param.category}"/><c:param name="sort" value="${param.sort}"/>
+                    <c:param name="category" value="${param.category}"/><c:param name="availability" value="${param.availability}"/><c:param name="sort" value="${param.sort}"/>
                 </c:url>
                 <a class="page-link" href="${previousPageUrl}" rel="prev">← Previous</a>
             </c:if>
@@ -62,7 +68,7 @@
             <c:if test="${currentPage lt totalPages}">
                 <c:url var="nextPageUrl" value="/products">
                     <c:param name="page" value="${currentPage + 1}"/><c:param name="q" value="${param.q}"/>
-                    <c:param name="category" value="${param.category}"/><c:param name="sort" value="${param.sort}"/>
+                    <c:param name="category" value="${param.category}"/><c:param name="availability" value="${param.availability}"/><c:param name="sort" value="${param.sort}"/>
                 </c:url>
                 <a class="page-link" href="${nextPageUrl}" rel="next">Next →</a>
             </c:if>

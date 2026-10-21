@@ -14,11 +14,12 @@ public class ProductServlet extends HttpServlet {
         try {
             String query = request.getParameter("q");
             Long category = parseLong(request.getParameter("category"));
-            int totalProducts = catalog.countMatching(query, category);
+            String availability = request.getParameter("availability");
+            int totalProducts = catalog.countMatching(query, category, availability);
             int totalPages = Math.max(1, (int) Math.ceil(totalProducts / (double) PAGE_SIZE));
             int page = Math.min(parsePage(request.getParameter("page")), totalPages);
             int offset = (page - 1) * PAGE_SIZE;
-            request.setAttribute("products", catalog.searchPage(query, category, request.getParameter("sort"), PAGE_SIZE, offset));
+            request.setAttribute("products", catalog.searchPage(query, category, availability, request.getParameter("sort"), PAGE_SIZE, offset));
             request.setAttribute("categories", catalog.categories());
             request.setAttribute("totalProducts", totalProducts);
             request.setAttribute("currentPage", page);

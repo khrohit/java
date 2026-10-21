@@ -16,6 +16,7 @@ public class ProductDAO {
         sql.append(switch (sort == null ? "" : sort) {
             case "price-low" -> "ORDER BY p.price ASC";
             case "price-high" -> "ORDER BY p.price DESC";
+            case "discount-high" -> "ORDER BY p.discount DESC, p.created_at DESC";
             case "name" -> "ORDER BY p.name ASC";
             default -> "ORDER BY p.created_at DESC";
         });
@@ -34,13 +35,15 @@ public class ProductDAO {
         }
     }
 
-    public List<Product> findPage(String search, Long categoryId, String sort, int limit, int offset) throws SQLException {
+    public List<Product> findPage(String search, Long categoryId, String availability, String sort, int limit, int offset) throws SQLException {
         StringBuilder sql = new StringBuilder(SELECT).append("WHERE p.status=1 ");
         if (search != null && !search.isBlank()) sql.append("AND (p.name LIKE ? OR p.brand LIKE ? OR p.description LIKE ?) ");
         if (categoryId != null && categoryId > 0) sql.append("AND p.category_id=? ");
+        appendAvailability(sql, availability);
         sql.append(switch (sort == null ? "" : sort) {
             case "price-low" -> "ORDER BY p.price ASC";
             case "price-high" -> "ORDER BY p.price DESC";
+            case "discount-high" -> "ORDER BY p.discount DESC, p.created_at DESC";
             case "name" -> "ORDER BY p.name ASC";
             default -> "ORDER BY p.created_at DESC";
         }).append(" LIMIT ? OFFSET ?");
@@ -57,16 +60,22 @@ public class ProductDAO {
         }
     }
 
-    public int countMatching(String search, Long categoryId) throws SQLException {
+    public int countMatching(String search, Long categoryId, String availability) throws SQLException {
         StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM products p WHERE p.status=1 ");
         if (search != null && !search.isBlank()) sql.append("AND (p.name LIKE ? OR p.brand LIKE ? OR p.description LIKE ?) ");
         if (categoryId != null && categoryId > 0) sql.append("AND p.category_id=? ");
+        appendAvailability(sql, availability);
         try (Connection c = Database.getConnection(); PreparedStatement ps = c.prepareStatement(sql.toString())) {
             bindFilters(ps, search, categoryId);
             try (ResultSet rs = ps.executeQuery()) {
                 return rs.next() ? rs.getInt(1) : 0;
             }
         }
+    }
+
+    private void appendAvailability(StringBuilder sql, String availability) {
+        if ("in-stock".equals(availability)) sql.append("AND p.stock > 0 ");
+        else if ("on-sale".equals(availability)) sql.append("AND p.discount > 0 ");
     }
 
     private int bindFilters(PreparedStatement ps, String search, Long categoryId) throws SQLException {
